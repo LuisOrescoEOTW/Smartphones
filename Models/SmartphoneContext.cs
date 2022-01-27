@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace Smartphones.Models
 {
-    public class telefonos
+    public class SmartphoneContext
     {
-          
     }
 }
