@@ -9,5 +9,6 @@ namespace Smartphones.Models
     {
         public int SensorId { get; set; }
         public string Nombre { get; set; }
+        public virtual ICollection<Telefono> Telefonos { get; set; }
     }
 }

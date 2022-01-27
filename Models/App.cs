@@ -9,5 +9,6 @@ namespace Smartphones.Models
     {
         public int AppId { get; set; }
         public string Nombre { get; set; }
+        public virtual ICollection<Instalacion> Instalaciones { get; set; }
     }
 }

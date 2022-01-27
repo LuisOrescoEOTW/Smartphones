@@ -7,5 +7,6 @@ namespace Smartphones.Models
 {
     public class SmartphoneContext
     {
+
     }
 }
