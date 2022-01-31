@@ -24,7 +24,11 @@ namespace Smartphones.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Instalacion>>> GetInstalacion()
         {
-            return await _context.Instalacion.ToListAsync();
+            return await _context.Instalacion
+                .Include(item => item.App)
+                .Include(item => item.Operario)
+                .Include(item => item.Telefono)
+                .ToListAsync();
         }
 
         // GET: api/Instalaciones/5

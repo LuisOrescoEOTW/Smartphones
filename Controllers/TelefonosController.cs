@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smartphones.Models;
+using System.Collections.ObjectModel;
 
 namespace Smartphones.Controllers
 {
@@ -51,25 +52,47 @@ namespace Smartphones.Controllers
                 return BadRequest();
             }
 
+            // La variable telefono tendrá la información que recibimos por PUT
+            // La variable viv tendrá la info original del telefono con el id recibido
+
+            var viv = await _context.Telefono.FindAsync(id);
+
+            // Borraremos los sensores del telefono para reemplazarlos con los recibidos
+
+            if (viv.Sensores != null)
+            {
+                viv.Sensores.Clear();
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Esto es importante porque tenemos que avisarle a EF
+            // que aquí termina una transacción y comienza otra
+            _context.ChangeTracker.Clear();
+
+
+            // Agregamos a la info del telefono los nuevos sensores
+            if (telefono.SensoresList != null)
+            {
+                foreach (var sensId in telefono.SensoresList)
+                {
+                    var sens = await _context.Sensor.FindAsync(sensId);
+                    if (sens != null)
+                    {
+                        telefono.Sensores.Add(sens);
+                    }
+                }
+            }
+
+            // Avisamos que hemos modificado la vivienda para que EF tome los cambios al guardar
             _context.Entry(telefono).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TelefonoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            // Si llegamos aquí es porque todo salió bien
+            // devolvemos OK (http 200) y los datos del telefono
+            return Ok(telefono);
+
         }
 
         // POST: api/Telefonos
@@ -77,9 +100,19 @@ namespace Smartphones.Controllers
         [HttpPost]
         public async Task<ActionResult<Telefono>> PostTelefono(Telefono telefono)
         {
+
+            // A cada uno de los sensores recibidos lo agregamos al telefono
+            foreach (var item in telefono.SensoresList)
+            {
+                Sensor p = await _context.Sensor.FindAsync(item);
+                telefono.Sensores.Add(p);
+            }
+
+            // Agregamos el telefono con toda su info a la base de datos
             _context.Telefono.Add(telefono);
             await _context.SaveChangesAsync();
 
+            // Devolvemos CREATED con el telefono generado
             return CreatedAtAction("GetTelefono", new { id = telefono.TelefonoId }, telefono);
         }
 

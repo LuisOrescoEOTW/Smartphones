@@ -9,7 +9,7 @@ using Smartphones.Models;
 namespace Smartphones.Migrations
 {
     [DbContext(typeof(SmartphoneContext))]
-    [Migration("20220128163304_Creo las tablas")]
+    [Migration("20220130035045_Creo las tablas")]
     partial class Creolastablas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

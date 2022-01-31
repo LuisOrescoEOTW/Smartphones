@@ -10,7 +10,7 @@ namespace Smartphones.Models
     {
         public Telefono()
         {
-            Sensores = new List<Sensor>();
+            Sensores = new List<Sensor>();            
         }
         public int TelefonoId { get; set; }
         public string Marca { get; set; }
@@ -18,10 +18,10 @@ namespace Smartphones.Models
         public float Precio { get; set; }
         
         [NotMapped]
-        public List<int> SensoresList { get; set; }
-
+        public List<int> SensoresList { get; set; } 
         public virtual ICollection<Sensor> Sensores { get; set; }
-        public virtual ICollection<Instalacion> Instalaciones { get; set; }
+
+        //public virtual ICollection<Instalacion> Instalaciones { get; set; }
 
     }
 }

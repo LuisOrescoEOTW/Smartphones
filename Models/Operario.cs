@@ -11,6 +11,6 @@ namespace Smartphones.Models
         public string Nombre { get; set; }
         public string Apellido { get; set; }
 
-        public virtual ICollection<Instalacion> Instalaciones { get; set; }
+        //public virtual ICollection<Instalacion> Instalaciones { get; set; }
     }
 }

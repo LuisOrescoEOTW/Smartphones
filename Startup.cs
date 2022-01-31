@@ -28,7 +28,7 @@ namespace Smartphones
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //.AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            //services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<SmartphoneContext>(opt => opt.UseMySQL("server=localhost;database=smartphonedb;user=root;password=root"));
 
