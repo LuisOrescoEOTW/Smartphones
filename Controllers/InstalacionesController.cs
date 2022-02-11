@@ -33,6 +33,7 @@ namespace Smartphones.Controllers
 
         // GET: api/Instalaciones/5
         [HttpGet("{id}")]
+        //public async Task<ActionResult<Instalacion>> GetInstalacion(int id)
         public async Task<ActionResult<Instalacion>> GetInstalacion(int id)
         {
             var instalacion = await _context.Instalacion.FindAsync(id);
@@ -43,6 +44,7 @@ namespace Smartphones.Controllers
             }
 
             return instalacion;
+            
         }
 
         // PUT: api/Instalaciones/5

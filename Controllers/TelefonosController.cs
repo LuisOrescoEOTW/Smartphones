@@ -25,7 +25,9 @@ namespace Smartphones.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Telefono>>> GetTelefono()
         {
-            return await _context.Telefono.ToListAsync();
+            return await _context.Telefono
+                .Include(item => item.Sensores)
+                .ToListAsync();
         }
 
         // GET: api/Telefonos/5
@@ -39,8 +41,26 @@ namespace Smartphones.Controllers
                 return NotFound();
             }
 
-            return telefono;
+            return telefono;            
         }
+
+        /*// GET: api/Telefonos/Buscar Telefono en Particular
+        [HttpGet("buscar")]
+        public dynamic Buscar(int telefono)
+        {
+            return _context.Telefono
+                .Where(item =>
+                    item.TelefonoId == telefono && item.Instalacion.TelefonoId == telefono)
+                .Select(item => new{
+                    item.TelefonoId,
+                    item.Marca,
+                    item.Modelo,
+                    item.Instalaciones.InstalacionId  
+                })
+                .ToList();
+        }*/
+
+
 
         // PUT: api/Telefonos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
