@@ -47,6 +47,30 @@ namespace Smartphones.Controllers
             
         }
 
+
+        // GET: api/ofertas/buscar
+        [HttpGet("buscar")]
+        public dynamic Buscar(int instala)
+        {
+            return _context.Instalacion
+                .Where(item =>
+                    item.TelefonoId == instala
+                )
+                .Select(item => new {
+                    item.TelefonoId,
+                    item.InstalacionId,
+                    item.Exitosa,
+                    item.Fecha,
+                    item.Operario.OperarioId,
+                    item.Operario.Apellido,
+                    item.Operario.Nombre,
+                    item.App.AppId,
+                    aplicacion = item.App.Nombre
+                })
+                .ToList();
+
+        }
+
         // PUT: api/Instalaciones/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
