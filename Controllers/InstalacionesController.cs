@@ -71,6 +71,26 @@ namespace Smartphones.Controllers
 
         }
 
+        // GET: api/ofertas/exitosa
+        [HttpGet("exitosa")]
+        public dynamic Exitosa(bool exito)
+        {
+            return _context.Instalacion
+                .Where(item =>
+                    item.Exitosa == exito
+                )
+                .Select(item => new {
+                    item.InstalacionId,
+                    item.Exitosa,
+                    item.Fecha,
+                    item.App.AppId,
+                    aplicacion = item.App.Nombre
+                })
+                .ToList();
+
+        }
+
+
         // PUT: api/Instalaciones/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
