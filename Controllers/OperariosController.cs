@@ -41,6 +41,26 @@ namespace Smartphones.Controllers
             return operario;
         }
 
+
+        // GET: api/operario/instalacionesxdia
+        [HttpGet("instalacionesxdia")]
+        public dynamic instalacionesxdia(DateTime fecha)
+        {
+            fecha = fecha.Date;
+            return _context.Operario
+                .Select(item => new
+                {
+                    item.OperarioId,
+                    item.Nombre,
+                    item.Apellido,
+                    cantidadAppsInstaladas = _context.Instalacion
+                            .Where(cantidad => cantidad.Fecha.Date == fecha &&
+                                        cantidad.Exitosa == true &&
+                                        cantidad.Operario.OperarioId == item.OperarioId)
+                            .Count()
+                }).ToList();
+        }
+
         // PUT: api/Operarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
