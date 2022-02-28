@@ -48,7 +48,7 @@ namespace Smartphones.Controllers
         }
 
 
-        // GET: api/ofertas/buscar
+        // GET: api/ofertas/buscar. Dado un Id Telefono, busca la intalacion, operario y apps.
         [HttpGet("buscar")]
         public dynamic Buscar(int instala)
         {
@@ -71,7 +71,7 @@ namespace Smartphones.Controllers
 
         }
 
-        // GET: api/ofertas/exitosa
+        // GET: api/ofertas/exitosa. Filtra por instalaciones exitosas o no.
         [HttpGet("exitosa")]
         public dynamic Exitosa(bool exito)
         {

@@ -44,45 +44,73 @@ namespace Smartphones.Controllers
             return telefono;            
         }
 
-        /*// GET: api/Telefonos/Buscar Telefono en Particular
-        [HttpGet("buscar")]
-        public dynamic Buscar(int telefono)
+        // GET: api/telefonos/xsensor. Filtrar los telefonos por sensores o apps instaladas
+        [HttpGet("xsensorapp")]
+        public dynamic xsensorapp(int appid, int sensid)
         {
-            return _context.Telefono
-                .Where(item =>
-                    item.TelefonoId == telefono && item.Instalacion.TelefonoId == telefono)
-                .Select(item => new{
-                    item.TelefonoId,
-                    item.Marca,
-                    item.Modelo,
-                    item.Instalaciones.InstalacionId  
-                })
-                .ToList();
-        }*/
+            if (appid != 0 && sensid != 0)
+            {
+                return BadRequest();
+            }
+            if (sensid != 0)
+            {
+                return _context.Sensor
+                 .Where(item => 
+                     item.SensorId == sensid)
+                 .Select(item => new
+                 {
+                     item.Nombre,
+                     Lista_de_Telefonos = item.Telefonos.Select(telephone => new
+                     {
+                         marca = telephone.Marca,
+                         modelo = telephone.Modelo,
+                         precio = telephone.Precio
+                     }).ToList()
+                 }).ToList();
+            }
+                return _context.App
+                 .Where(item => 
+                     item.AppId == appid)
+                 .Select(item => new
+                 {
+                     item.Nombre,
+                     Lista_de_Telefonos = item.Instalaciones.Select(instalation => new
+                     {
+                         instalation.Telefono.Marca,
+                         instalation.Telefono.Modelo,
+                         instalation.Telefono.Precio
+                     }).ToList()
+                 }).ToList();
 
-
-
+        }
+        
+        
         // PUT: api/Telefonos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTelefono(int id, Telefono telefono)
         {
-            if (id != telefono.TelefonoId)
-            {
-                return BadRequest();
-            }
-
             // La variable telefono tendrá la información que recibimos por PUT
             // La variable viv tendrá la info original del telefono con el id recibido
 
             var viv = await _context.Telefono.FindAsync(id);
 
+            if (viv == null)
+            {
+                return BadRequest();
+            }
+            if (id != telefono.TelefonoId)
+            {
+                return BadRequest();
+            }
+                       
+            
             // Borraremos los sensores del telefono para reemplazarlos con los recibidos
 
             if (viv.Sensores != null)
             {
                 viv.Sensores.Clear();
-            }
+            }            
 
             await _context.SaveChangesAsync();
 

@@ -20,8 +20,7 @@ namespace Smartphones.Models
         [NotMapped]
         public List<int> SensoresList { get; set; } 
         public virtual ICollection<Sensor> Sensores { get; set; }
-
-        //public virtual ICollection<Instalacion> Instalaciones { get; set; }
+        public virtual ICollection<Instalacion> Instalaciones { get; set; }
 
     }
 }
